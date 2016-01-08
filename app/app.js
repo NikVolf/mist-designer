@@ -6,7 +6,7 @@ define(['bower_components/diagram-designer-core/js/diagram/diagram', 'app/stateM
 
     return Marionette.Object.extend({
         showDiagram: function() {
-            this.diagram = new Diagram({ toolboxWidth: 120, toolboxHeight: 1000, size: { width: "1900px", height: "900px" } });
+            this.diagram = new Diagram({ toolboxWidth: 120, toolboxHeight: 1000, size: { width: "1900px", height: "700px" } });
             this.diagram.render();
 
             var stateMachinePalette = new StateMachinePalette();
