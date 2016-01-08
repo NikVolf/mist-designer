@@ -1,48 +1,28 @@
-var exports = module.exports = {};
-var glob = require("glob");
-var fs = require("fs");
+define([], function() {
 
-exports.listDiagrams = function(callback) {
+    var api = {};
 
-    glob(__dirname + "/**/*.n3d", {}, function (er, files) {
+    api.listDiagrams = function(callback) {
 
-        var diagramNames = [];
+        callback && callback(["diagram1"]);
 
-        for (var i = 0; i < files.length; i++) {
-            var diagramName = files[i].replace(__dirname.replace(/\\/g, "/") + "/", "");
-            diagramName = diagramName.replace(".n3d", "");
-            diagramNames.push(diagramName);
-        }
+    };
 
-        callback(diagramNames);
+    api.addDiagram = function(name, callback) {
+    };
 
-    })
-};
+    api.overwriteDiagram = function (name, json, callback) {
+        callback && callback();
+    };
 
-exports.addDiagram = function(name, callback) {
+    api.loadDiagram = function(name, callback) {
 
-    var json = JSON.stringify([]);
+        callback && callback("[]");
 
-    exports.overwriteDiagram(name, json, callback);
+    };
 
-};
+    return api;
 
-function getFileName(diagramName) {
-    return __dirname + "/" + diagramName + ".n3d";
-}
 
-exports.overwriteDiagram = function (name, json, callback) {
 
-    fs.writeFile(getFileName(name), json);
-
-    callback && callback();
-
-};
-
-exports.loadDiagram = function(name, callback) {
-
-    fs.readFile(getFileName(name), "utf-8", function(err, data) {
-        callback(data);
-    });
-
-};
+});

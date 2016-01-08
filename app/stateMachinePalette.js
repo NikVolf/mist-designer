@@ -15,8 +15,8 @@ define([
     function(ToolboxGroup, ToolboxElement, Activity, FlowView, behaviors) {
 
         var StateDefinition = function() {
-            this.offset = { left: 40, top: 0 };
-            this.view = Rectangle.ToolboxElement;
+            this.offset = { left: 0, top: 0 };
+            this.view = StateDefinition.ToolboxElement;
             this.type = "StateDefinition";
         };
 
@@ -43,7 +43,7 @@ define([
         });
 
         var TransitionDefinition = function() {
-            this.offset = { left: 0, top: 30 };
+            this.offset = { left: 0, top: 0 };
             this.view = TransitionDefinition.ToolboxElement;
             this.type = "Flow";
         };
@@ -60,7 +60,8 @@ define([
 
         var modelReference = {
             'Flow': FlowView,
-            'StateDefinition': StateDefinition,
+            'StateDefinition': StateDefinition.Activity,
+            'TransitionDefinition': TransitionDefinition.Activity,
 
             matchModel: function(model) {
                 return this[model.attributes.type]
@@ -71,7 +72,6 @@ define([
             initialize: function(options) {
                 ToolboxGroup.prototype.initialize.apply(this, arguments);
 
-                this.entities = options.entities;
                 this.position = { x: 0, y: 10};
 
                 this.elements.push(new StateDefinition());
@@ -85,8 +85,7 @@ define([
             initialize: function(options) {
                 ToolboxGroup.prototype.initialize.apply(this, arguments);
 
-                this.entities = options.entities;
-                this.position = { x: 0, y: 10};
+                this.position = { x: 0, y: 60};
 
                 this.elements.push(new TransitionDefinition());
 
@@ -96,11 +95,6 @@ define([
         });
 
         return Marionette.Object.extend({
-
-            initialize: function(options) {
-                this.entities = options.entities;
-            },
-
             install: function(diagram) {
                 diagram.toolboxView.pushGroup(new StatesGroup({ container: diagram.toolboxView }));
                 diagram.toolboxView.pushGroup(new TransitionsGroup({ container: diagram.toolboxView }));
