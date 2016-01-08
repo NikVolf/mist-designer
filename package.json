@@ -1,0 +1,14 @@
+{
+  "name": "uml-demo",
+  "version": "0.1.0",
+  "main": "index.html",
+  "devDependencies": {
+    "fs": "0.0.2",
+    "requirejs": "^2.1.22"
+  },
+  "dependencies": {
+    "glob": "^6.0.3",
+    "requirejs": "^2.1.22",
+    "underscore": "^1.8.3"
+  }
+}
