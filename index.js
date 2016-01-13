@@ -10,7 +10,8 @@
             'handlebars': 'bower_components/handlebars/handlebars',
             'backbone': 'bower_components/backbone/backbone',
             'marionette': 'bower_components/backbone.marionette/lib/backbone.marionette',
-            'underscore': 'bower_components/underscore/underscore'
+            'underscore': 'bower_components/underscore/underscore',
+            'diagram-designer': 'bower_components/diagram-designer-core/lib/diagram-designer-core',
         }
     });
 

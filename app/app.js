@@ -2,11 +2,11 @@
  * Created by nvolf on 22.12.2015.
  */
 
-define(['bower_components/diagram-designer-core/js/diagram/diagram', 'app/stateMachinePalette'], function(Diagram, StateMachinePalette) {
+define(['diagram-designer', 'app/stateMachinePalette'], function(designer, StateMachinePalette) {
 
     return Marionette.Object.extend({
         showDiagram: function() {
-            this.diagram = new Diagram({ toolboxWidth: 120, toolboxHeight: 1000, size: { width: "1900px", height: "700px" } });
+            this.diagram = new designer.Diagram({ toolboxWidth: 120, toolboxHeight: 1000, size: { width: "1900px", height: "700px" } });
             this.diagram.render();
 
             var stateMachinePalette = new StateMachinePalette();

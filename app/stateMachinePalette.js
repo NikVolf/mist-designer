@@ -5,14 +5,10 @@
  * Created by nvolf on 17.12.2015.
  */
 define([
-        'bower_components/diagram-designer-core/js/diagram/toolboxGroup',
-        'bower_components/diagram-designer-core/js/diagram/toolboxElement',
-        'bower_components/diagram-designer-core/js/activity/activity',
-        'bower_components/diagram-designer-core/js/activity/flow',
-        'bower_components/diagram-designer-core/js/behaviors/api'
+        'diagram-designer'
     ],
 
-    function(ToolboxGroup, ToolboxElement, Activity, FlowView, behaviors) {
+    function(designer) {
 
         var StateDefinition = function() {
             this.offset = { left: 0, top: 0 };
@@ -20,24 +16,27 @@ define([
             this.type = "StateDefinition";
         };
 
-        StateDefinition.Activity = Activity.extend({
+        StateDefinition.Activity = designer.activities.Activity.extend({
             initialize: function(cfg) {
-                behaviors.rectangularResizers.setup(this);
-                behaviors.rectangularShapedConnectorSet.setup(this);
-                behaviors.centerAlignedTitleLayout.setup(this);
+
+                designer.behaviors.setupDeclarative(this,
+                    'rectangular-resizers',
+                    'rectangular-shaped-connector-set',
+                    'titled');
+
                 _.extend(cfg, {
                     template: '<g transform="{{dimScale}}"  class="js-activity-resize-root">' +
                     '<rect class="diagram-activity-rectangle" vector-effect="non-scaling-stroke" x="0" y="0" width="100" height="100"></rect>' +
                     '</g>'
                 });
-                Activity.prototype.initialize.apply(this, [cfg]);
+                designer.activities.Activity.prototype.initialize.apply(this, [cfg]);
             }
         });
 
-        StateDefinition.ToolboxElement = ToolboxElement.extend({
+        StateDefinition.ToolboxElement = designer.toolbox.Element.extend({
 
             initialize: function() {
-                ToolboxElement.prototype.initialize.apply(this, arguments);
+                designer.toolbox.Element.prototype.initialize.apply(this, arguments);
                 this.tpl = Handlebars.compile("<rect class='js-toolbox toolbox-rectangle-primitive' x=0 y=0 width=25 height=15 />")
             }
         });
@@ -48,9 +47,9 @@ define([
             this.type = "Flow";
         };
 
-        TransitionDefinition.ToolboxElement = ToolboxElement.extend({
+        TransitionDefinition.ToolboxElement = designer.toolbox.Element.extend({
             initialize: function() {
-                ToolboxElement.prototype.initialize.apply(this, arguments);
+                designer.toolbox.Element.prototype.initialize.apply(this, arguments);
                 this.tpl = Handlebars.compile(
                     '<g transform="translate(13,-6) scale(0.75)"><path d="M0,12L0,47" stroke="#7f7f7f" stroke-width="2"></path>' +
                     '<polygon points="-5,27 0,11 5,27 -5,27" stroke-width="2" fill="#7f7f7f"></polygon></g>');
@@ -59,7 +58,7 @@ define([
 
 
         var modelReference = {
-            'Flow': FlowView,
+            'Flow': designer.activities.Flow,
             'StateDefinition': StateDefinition.Activity,
             'TransitionDefinition': TransitionDefinition.Activity,
 
@@ -68,9 +67,9 @@ define([
             }
         };
 
-        var StatesGroup = ToolboxGroup.extend({
+        var StatesGroup = designer.toolbox.Group.extend({
             initialize: function(options) {
-                ToolboxGroup.prototype.initialize.apply(this, arguments);
+                designer.toolbox.Group.prototype.initialize.apply(this, arguments);
 
                 this.position = { x: 0, y: 10};
 
@@ -81,9 +80,9 @@ define([
             }
         });
 
-        var TransitionsGroup = ToolboxGroup.extend({
+        var TransitionsGroup = designer.toolbox.Group.extend({
             initialize: function(options) {
-                ToolboxGroup.prototype.initialize.apply(this, arguments);
+                designer.toolbox.Group.prototype.initialize.apply(this, arguments);
 
                 this.position = { x: 0, y: 60};
 
