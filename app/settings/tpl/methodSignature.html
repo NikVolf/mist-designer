@@ -1,0 +1,14 @@
+<div>
+    <h2>Signature</h2>
+
+    <div data-bind='template: {name: "editable-parameter-set", data: declaringParameters }'>
+    </div>
+
+    <div data-bind="visible: hasReturnType">
+        <h3>Return Type</h3>
+        <div class="md-signature-edit-parameter-type">
+            <select title="parameter type" data-bind="options: parameterTypes, selectedOptions: returnType"></select>
+        </div>
+    </div>
+
+</div>

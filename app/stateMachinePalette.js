@@ -22,11 +22,13 @@ define([
                 designer.behaviors.setupDeclarative(this,
                     'rectangular-resizers',
                     'rectangular-shaped-connector-set',
+                    'info-button',
+                    'info-window',
                     'titled');
 
                 _.extend(cfg, {
                     template: '<g transform="{{dimScale}}"  class="js-activity-resize-root">' +
-                    '<rect class="diagram-activity-rectangle" vector-effect="non-scaling-stroke" x="0" y="0" width="100" height="100"></rect>' +
+                    '<rect class="diagram-activity-rectangle js-activity-shape" vector-effect="non-scaling-stroke" x="0" y="0" width="100" height="100"></rect>' +
                     '</g>'
                 });
                 designer.activities.Activity.prototype.initialize.apply(this, [cfg]);

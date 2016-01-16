@@ -33,6 +33,12 @@
     stroke-width: 2;
 }
 
+.diagram-activity-rectangle {
+    fill: white;
+    stroke: red;
+    stroke-width: 2;
+}
+
 .diagram-activity-circle {
     fill: white;
     stroke: blue;
@@ -48,10 +54,8 @@
 }
 
 svg {
-    margin-left: 10px;
-    margin-top: 10px;
-    border-right: 1px solid black;
     border-bottom: 1px solid black;
+    border-right: 1px solid black;
 }
 
 .svg-resizer.svg-east-resizer, .svg-resizer.svg-west-resizer {
@@ -90,43 +94,37 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
     opacity: 1;
 }
 
-.diagram-activity-entity, .toolbox-activity-entity {
-    fill: #fff;
-    stroke: blue;
-    stroke-width: 1px;
-    opacity: 0.4;
+.g-selected .diagram-activity-rectangle, .g-selected .diagram-activity-circle {
+    stroke-width: 3;
 }
 
-.diagram-activity-entity-text, .toolbox-activity-entity-text, .diagram-activity-attribute-text {
+.rect-hover:hover {
+    fill: rgb(220, 220, 220)
+}
+
+.sequence-back-container {
+    opacity: 0.7
+}
+
+.sequence-back-container:hover {
+    opacity: 1
+}
+
+.sequence-back-container:hover .rect-hover {
+    fill: black;
+}
+
+.activity-title {
+    cursor: default;
     stroke: black;
     fill: black;
-    stroke-width: 0.5;
-    font-family: "Courier New", Courier, monospace;
-    cursor: pointer;
 }
 
-.toolbox-activity-entity-text {
-    font-size: small;
+.dd-overlay-editor-area {
+    z-index: 1000
 }
 
-.diagram-activity-attribute-text {
-    stroke: darkblue;
-    fill: darkblue;
-    font-size: smaller;
-}
-
-.little-menu {
-    margin: 5px;
-    padding: 5px;
-    cursor: default;
-    font-weight: bold;
-}
-
-.little-menu:hover {
-    background-color: #efefef;
-    border: 1px solid grey;
-}
-
-.g-selected .diagram-activity-entity {
-    stroke-width: 2;
+.dd-info-window {
+    border: 1px dotted black;
+    pointer-events: all;
 }

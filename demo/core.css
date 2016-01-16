@@ -123,3 +123,83 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 .dd-overlay-editor-area {
     z-index: 1000
 }
+
+.diagram-activity-event {
+    fill: white;
+    stroke: green;
+    stroke-width: 2;
+}
+
+.diagram-activity-gate {
+    fill: white;
+    stroke: yellow;
+    stroke-width: 1.5;
+}
+
+.dd-info-window {
+    background-color: white;
+    padding: 12px;
+}
+
+.toolbox-event {
+    fill: none;
+    stroke: green;
+    stroke-width: 1.5;
+}
+
+.md-signature-edit-parameters {
+    margin-bottom: 10px;
+}
+
+.md-signature-edit-parameter-name input, .md-signature-edit-parameter-name span {
+    display: block;
+    width: 160px;
+}
+
+.md-signature-edit-parameter-type select, .md-signature-edit-parameter-type span {
+    display: block;
+    width: 90px;
+}
+
+.md-signature-edit-parameter-cell {
+    float: left;
+    padding: 2px;
+    vertical-align: middle;
+    display: block;
+}
+
+.md-signature-edit-parameter-done {
+    width: 60px;
+}
+
+.md-signature-edit-parameter-remove {
+    width: 60px;
+}
+
+
+.md-signature-edit-parameter-cell-last {
+    padding: 2px;
+    vertical-align: middle;
+    display: block;
+}
+
+.md-signature-edit-parameter-rowcmd a {
+    color: blue;
+}
+
+.md-signature-edit-parameters-actions {
+    width: 100%;
+}
+
+.md-signature-edit-parameters {
+    min-height: 16px;
+}
+
+.md-signature-edit-parameter-row {
+    min-height: 20px;
+    clear: both;
+}
+
+.md-contract-settings {
+    pointer-events: all;
+}

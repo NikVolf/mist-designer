@@ -12,10 +12,13 @@
             'marionette': 'bower_components/backbone.marionette/lib/backbone.marionette',
             'underscore': 'bower_components/underscore/underscore',
             'diagram-designer': 'bower_components/diagram-designer-core/lib/diagram-designer-core',
+            'ko': 'bower_components/knockout/dist/knockout',
+            'text': 'bower_components/text/text'
         }
     });
 
-    require(["handlebars", "d3", "jquery", "underscore"], function (handlebars, d3, jquery, underscore) {
+    require(["handlebars", "d3", "jquery", "underscore", "ko"], function (handlebars, d3, jquery, underscore, ko) {
+        window.ko = ko;
         window.Handlebars = handlebars;
         window.d3 = d3;
         window.$ = jquery;
