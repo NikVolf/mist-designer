@@ -39,14 +39,13 @@
   "devDependencies": {
     "requirejs": "~2.1.22"
   },
-  "version": "0.2.6",
-  "_release": "0.2.6",
+  "_release": "1b1aa8fa41",
   "_resolution": {
-    "type": "version",
-    "tag": "v0.2.6",
-    "commit": "e25c34964ed00ffd471a7ca9b25f7175e4412435"
+    "type": "branch",
+    "branch": "master",
+    "commit": "1b1aa8fa41cbfb1cfaf1f66985b4baa265aeb88f"
   },
-  "_source": "git://github.com/comindware/diagram-designer.git",
-  "_target": "~0.2.0",
-  "_originalSource": "diagram-designer-core"
+  "_source": "https://github.com/comindware/diagram-designer.git",
+  "_target": "master",
+  "_originalSource": "https://github.com/comindware/diagram-designer.git"
 }

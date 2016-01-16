@@ -1,0 +1,28 @@
+<div class="md-parameters-col">
+    <div class="md-signature-edit-parameters" data-bind="foreach: members">
+        <div class="md-signature-edit-parameter-row">
+            <div class="md-signature-edit-parameter-name md-signature-edit-parameter-cell">
+                <span data-bind="visible: !isEditMode(), text: name, click: startEdit"></span>
+                <input title="parameter name" data-bind="visible: isEditMode, value: name">
+            </div>
+            <div class="md-signature-edit-parameter-type md-signature-edit-parameter-cell">
+                <span data-bind="visible: !isEditMode(), text: type, click: startEdit"></span>
+                <select title="parameter type"
+                        data-bind="visible: isEditMode, options: $parent.parameterTypes, selectedOptions: type"></select>
+            </div>
+            <div class="md-signature-edit-parameter-done md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
+                <a data-bind="visible: isEditMode, click: doneEdit">Done</a>
+            </div>
+            <div class="md-signature-edit-parameter-remove md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
+                <a data-bind="click: remove">Remove</a>
+            </div>
+            <div class="md-signature-edit-parameter-cell-last">
+            </div>
+        </div>
+    </div>
+
+    <div class="md-parameter-col-actions">
+        <input type="button" value="add" data-bind="event: { click: addParameter }"/>
+    </div>
+
+</div>
