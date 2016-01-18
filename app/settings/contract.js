@@ -24,9 +24,7 @@ define(['text!./tpl/contract.html', './messaging'], function(template, messaging
 
         ensureSettings: function(diagram) {
             if (!diagram.settings) {
-                diagram.settings = {
-                    context: new messaging.viewModels.EditableParameterSet([])
-                }
+                diagram.settings = new messaging.viewModels.ContractContext({})
             }
         },
 

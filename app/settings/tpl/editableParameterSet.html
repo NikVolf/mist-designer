@@ -1,5 +1,5 @@
 <div class="md-parameters-col">
-    <div class="md-signature-edit-parameters" data-bind="foreach: members">
+    <div class="md-signature-edit-parameters" data-bind="foreach: members, visible: !isEmpty()">
         <div class="md-signature-edit-parameter-row">
             <div class="md-signature-edit-parameter-name md-signature-edit-parameter-cell">
                 <span data-bind="visible: !isEditMode(), text: name, click: startEdit"></span>
@@ -8,7 +8,7 @@
             <div class="md-signature-edit-parameter-type md-signature-edit-parameter-cell">
                 <span data-bind="visible: !isEditMode(), text: type, click: startEdit"></span>
                 <select title="parameter type"
-                        data-bind="visible: isEditMode, options: $parent.parameterTypes, selectedOptions: type"></select>
+                        data-bind="visible: isEditMode, options: context.typeReference, selectedOptions: type"></select>
             </div>
             <div class="md-signature-edit-parameter-done md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
                 <a data-bind="visible: isEditMode, click: doneEdit">Done</a>
@@ -16,8 +16,12 @@
             <div class="md-signature-edit-parameter-remove md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
                 <a data-bind="click: remove">Remove</a>
             </div>
-            <div class="md-signature-edit-parameter-cell-last">
-            </div>
+        </div>
+    </div>
+
+    <div class="md-signature-edit-parameters" data-bind="visible: isEmpty">
+        <div class="md-signature-edit-parameter-row md-empty-rows" data-bind="visible: isEmpty">
+            ( EMPTY SET )
         </div>
     </div>
 
