@@ -256,7 +256,11 @@ function(
     ko.templates['method-mapping'] = methodMappingTemplate;
 
     var editMethod = function(element, options) {
-        var viewModel = new MethodDefinitionViewModel(options);
+        var viewModel = new MethodDefinitionViewModel(
+            _.result(options, "signature"),
+            _.result(options, "mapping") || [],
+            _.result(options, "context") || []
+        );
         ko.applyBindings(
             {
                 method: viewModel

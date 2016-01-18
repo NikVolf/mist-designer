@@ -2,7 +2,7 @@
  * Created by nikky on 1/16/2016.
  */
 
-define(['text!./tpl/contract.html', './messaging'], function(template){
+define(['text!./tpl/contract.html', './messaging'], function(template, messaging){
 
 
     return {
@@ -17,20 +17,15 @@ define(['text!./tpl/contract.html', './messaging'], function(template){
             this.__htmlRootElement = this.__htmlContainer.append("div").attr("class", "md-diagram-settings")
                 .html(template);
 
-            if (!diagram.settings) {
-                diagram.settings = {
-                    context: []
-                }
-            }
+            this.ensureSettings(this.diagram);
 
             this.__showSettings();
         },
 
         ensureSettings: function(diagram) {
-            if (!diagram.settings)
-            {
+            if (!diagram.settings) {
                 diagram.settings = {
-                    context: []
+                    context: new messaging.viewModels.EditableParameterSet([])
                 }
             }
         },
