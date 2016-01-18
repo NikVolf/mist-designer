@@ -149,6 +149,7 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 
 .md-signature-edit-parameters {
     margin-bottom: 10px;
+    display: table;
 }
 
 .md-signature-edit-parameter-name input, .md-signature-edit-parameter-name span {
@@ -162,11 +163,12 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 }
 
 .md-signature-edit-parameter-cell {
-    float: left;
     padding: 2px;
     vertical-align: middle;
-    display: block;
+    display: table-cell;
 }
+
+
 
 .md-signature-edit-parameter-done {
     width: 60px;
@@ -174,13 +176,6 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 
 .md-signature-edit-parameter-remove {
     width: 60px;
-}
-
-
-.md-signature-edit-parameter-cell-last {
-    padding: 2px;
-    vertical-align: middle;
-    display: block;
 }
 
 .md-signature-edit-parameter-rowcmd a {
@@ -191,15 +186,24 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
     width: 100%;
 }
 
-.md-signature-edit-parameters {
-    min-height: 16px;
-}
-
-.md-signature-edit-parameter-row {
-    min-height: 20px;
-    clear: both;
-}
-
 .md-contract-settings {
     pointer-events: all;
+}
+
+.md-mapping-row {
+    display: table-row;
+}
+
+.md-mapping-table {
+    display: table;
+}
+
+.md-mapping-cell {
+    padding: 2px;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.md-mapping-source-name, .md-mapping-target-select, .md-mapping-target-select select {
+    width: 200px;
 }

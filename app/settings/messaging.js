@@ -88,52 +88,58 @@ function(
 
         this.targetParameters = targetParameters;
 
-        this.source = {
-            name: ko.observable(model.source ? model.source.name : ""),
-            type: ko.observable(model.source ? model.source.type : ""),
-            isAssigned: ko.computed(function() {
-                return !!this.source.name() && !!this.source.type();
-            }, this)
+        this.isEditMode = ko.observable(false);
+
+        this.doneEdit = function() {
+            this.isEditMode(false)
         };
 
-        if (model.source && model.source.name && model.source.name.isObservable()) {
+        this.source = {
+            name: ko.observable(model.source ? ko.utils.unwrapObservable(model.source.name) : ""),
+            type: ko.observable(model.source ? ko.utils.unwrapObservable(model.source.type) : ""),
+            //isAssigned: ko.computed(function() {
+            //    return !!this.source.name() && !!this.source.type();
+            //}, this)
+        };
+
+        if (model.source && model.source.name && ko.isObservable(model.source.name)) {
             model.source.name.subscribe(function(newSourceName) {
                 this.source.name(newSourceName);
             }, this);
         }
 
-        if (model.source && model.source.type && model.source.type.isObservable()) {
+        if (model.source && model.source.type && ko.isObservable(model.source.type)) {
             model.source.type.subscribe(function(newSourceType) {
                 this.source.type(newSourceType);
             }, this);
         }
 
         this.target = {
-            name: ko.observable(model.target ? model.target.name : ""),
-            type: ko.observable(model.target ? model.target.name : ""),
-            isAssigned: ko.computed(function() {
-                return !!this.target.name() && !!this.target.type();
-            }, this),
-            isValid: ko.computed(function(){
-                return this.target.type() == this.source.type();
-            }, this)
+            name: ko.observable(model.target ? ko.utils.unwrapObservable(model.target.name) : ""),
+            type: ko.observable(model.target ? ko.utils.unwrapObservable(model.target.name) : ""),
+            //isAssigned: ko.computed(function() {
+            //    return !!this.target.name() && !!this.target.type();
+            //}, this),
+            //isValid: ko.computed(function(){
+            //    return this.target.type() == this.source.type();
+            //}, this)
         };
 
         this.selectedTarget = ko.observable(model.target ? model.target.name : null);
 
         this.selectedTarget.subscribe(function(newSelectedTargetValue){
             var newSelectedParameter = _.findWhere(
-                ko.unwrapObservable(this.targetParameters),
+                ko.utils.unwrapObservable(this.targetParameters),
                 {
                     name : newSelectedTargetValue
                 });
 
             this.target.name(newSelectedParameter.name);
             this.target.type(newSelectedParameter.type);
-        }.bind(this));
+        }, this);
 
         this.isOfSource = function(parameterName) {
-            return this.source.name() == ko.unwrapObservable(parameterName);
+            return this.source.name() == ko.utils.unwrapObservable(parameterName);
         };
     };
 
@@ -156,8 +162,14 @@ function(
 
         this.allowAdd = ko.observable(false);
 
+        this.allowRemove = ko.observable(false);
+
         this.addMapping = function() {
 
+        };
+
+        this.remove = function(mapItem) {
+            this.map.remove(mapItem);
         };
 
         this.isEditMode = ko.observable(false);
@@ -169,21 +181,14 @@ function(
                     this.pushMap(change.value);
                 }
                 else if (change.status === 'deleted') {
-                    var mapEntry = this.map.find(function(mappingItem) {
+                    var mapEntry = this.map().find(function(mappingItem) {
                         return mappingItem.isOfSource(change.value.name)
                     });
                     if (mapEntry)
                         this.map.remove(mapEntry);
                 }
             }, this);
-
-            _.each(this.sourceParameters, function(sourceParameter) {
-
-                if (!map) {
-
-                }
-            }, this);
-        }, this);
+        }, this, "arrayChange");
 
         this.targetParameters = ko.isObservable(model.targetParameters)
             ? model.targetParameters

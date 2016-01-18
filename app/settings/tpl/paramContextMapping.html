@@ -1,33 +1,30 @@
 <div class="md-mapping">
-    <div class="md-mapping-row" data-bind="foreach: map">
-        <div class="md-mapping-source-name md-mapping-cell" data-bind="with: source">
-            <span class="md-mapping-entity-id" data-bind="text: name"></span>
-            <span class="md-mapping-entity-delimeter"> : </span>
-            <span class="md-mapping-entity-type" data-bind="text: type"></span>
-        </div>
+    <div class="md-mapping-table" data-bind="foreach: map">
+        <div class="md-mapping-row" >
+            <div class="md-mapping-source-name md-mapping-cell" data-bind="with: source">
+                <span class="md-mapping-entity-id" data-bind="text: name"></span>
+                <span class="md-mapping-entity-delimeter"> : </span>
+                <span class="md-mapping-entity-type" data-bind="text: type"></span>
+            </div>
 
-        <div class="md-mapping-target-name md-mapping-cell" data-bind="with: target, visible: !isEditMode()">
-            <span class="md-mapping-entity-id" data-bind="text: name"></span>
-            <span class="md-mapping-entity-delimeter"> : </span>
-            <span class="md-mapping-entity-type" data-bind="text: type"></span>
-        </div>
+            <div class="md-mapping-cell" data-bind="with: source">
+                ->
+            </div>
 
-        <div class="md-mapping-target-select md-mapping-cell">
-            <select title="target for map"
-                    data-bind="visible: isEditMode,
-                               options: $component.targetParamReference,
-                               selectedOptions: selectedTarget">
+            <div class="md-mapping-target-select md-mapping-cell">
+                <select title="target for map"
+                        data-bind="options: $parent.targetParamReference,
+                                   selectedOptions: selectedTarget">
 
-            </select>
-        </div>
+                </select>
+            </div>
 
-        <div class="md-mapping-done md-mapping-cell md-mapping-cell-rowcmd">
-            <a data-bind="visible: isEditMode, click: doneEdit">Done</a>
-        </div>
-        <div class="md-mapping-remove md-mapping-cell md-mapping-cell-rowcmd">
-            <a data-bind="click: remove, visible: allowRemove">Remove</a>
-        </div>
-        <div class="md-mapping-cell-last">
+            <div class="md-mapping-done md-mapping-cell md-mapping-cell-rowcmd">
+                <a data-bind="visible: isEditMode, click: doneEdit">Done</a>
+            </div>
+            <div class="md-mapping-remove md-mapping-cell md-mapping-cell-rowcmd">
+                <a data-bind="click: $parent.remove, visible: $parent.allowRemove">Remove</a>
+            </div>
         </div>
     </div>
 
