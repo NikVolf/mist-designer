@@ -207,3 +207,38 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 .md-mapping-source-name, .md-mapping-target-select, .md-mapping-target-select select {
     width: 200px;
 }
+
+.md-contract-settings {
+    pointer-events: all;
+}
+
+.md-message-type-edit {
+    margin-left: 100px;
+    border-left: 1px dotted black;
+    padding-left: 15px;
+}
+
+.md-messsage-type-name-display {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: default;
+
+    min-width: 24px;
+
+    padding: 2px;
+
+}
+
+.md-messsage-type-name-display:hover {
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+.md-parameter-col-actions {
+    margin-top: 5px;
+    margin-botton: 15px;
+}

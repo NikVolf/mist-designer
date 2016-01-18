@@ -2,8 +2,10 @@
     <h2>Contract Settings</h2>
 
     <h3>Context variables</h3>
-    <div data-bind='component: {name: "ko-editable-parameter-set", params: { "parameters": context }}'>
+    <div data-bind='template: {name: "editable-parameter-set", data: globals }'>
     </div>
 
     <h3>Message types</h3>
+    <div data-bind='template: {name: "message-types-collection", data: messageTypes }'>
+    </div>
 </div>

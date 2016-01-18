@@ -8,6 +8,7 @@ define([
     'text!./tpl/paramContextMapping.html',
     'text!./tpl/methodSignature.html',
     'text!./tpl/methodMapping.html',
+    'text!./tpl/messageTypes.html',
     './stringTemplateEngine',
     './parameterTypes'],
 function(
@@ -15,11 +16,13 @@ function(
     paramContextMappingTemplate,
     methodSignatureTemplate,
     methodMappingTemplate,
+    messageTypesTemplate,
     stringTemplateEngine,
     parameterTypes){
 
-    var EditableParameterViewModel = function(model) {
+    var EditableParameterViewModel = function(model, context) {
         _.extend(this, {
+            context: context,
             name : ko.observable(model.name),
             type : ko.observable(model.type),
             isEditMode: ko.observable(false),
@@ -36,7 +39,9 @@ function(
         });
     };
 
-    var EditableParameterSetViewModel = function(parameters) {
+    var EditableParameterSetViewModel = function(parameters, context) {
+        this.context = context;
+
         this.parameterIsDeletedChanged = function(parameterViewModel, newValue) {
             if (newValue)
             {
@@ -52,7 +57,7 @@ function(
 
 
         this.createParameterViewModel = function(model) {
-            var viewModel = new EditableParameterViewModel(model);
+            var viewModel = new EditableParameterViewModel(model, this.context);
             viewModel.isDeleted.subscribe(this.parameterIsDeletedChanged.bind(this, viewModel));
             viewModel.name.subscribe(this.saveSignature, this);
             viewModel.type.subscribe(this.saveSignature, this);
@@ -60,21 +65,21 @@ function(
             return viewModel;
         };
 
-
-
         this.members = ko.observableArray(_.map(parameters, this.createParameterViewModel, this));
-
-        this.parameterTypes = ko.observableArray(parameterTypes);
 
         this.members.subscribe(this.saveSignature, this);
 
         this.addParameter = function() {
             var viewModel = this.createParameterViewModel({
-                name: 'new parameter',
-                type: this.parameterTypes()[0]
+                name: 'new_param',
+                type: this.context.typeReference()[0]
             });
             this.members.push(viewModel)
         };
+
+        this.isEmpty = ko.computed(function() {
+            return this.members().length == 0;
+        }, this);
     };
 
 
@@ -144,6 +149,8 @@ function(
     };
 
     var ParamToContextMappingViewModel = function(model){
+
+        this.context = model.context;
 
         this.sourceParameters = ko.isObservable(model.sourceParameters)
             ? model.sourceParameters
@@ -221,17 +228,70 @@ function(
     };
 
     var MethodDefinitionViewModel = function(signature, map, context) {
+        this.context = context;
 
         this.signature = new SignatureViewModel(signature);
 
         this.parameterTypes = ko.observableArray(parameterTypes);
-        this.context = context;
 
         this.mappings = new ParamToContextMappingViewModel({
             sourceParameters: this.signature.declaringParameters.members,
-            targetParameters: this.context,
-            map: map
+            targetParameters: this.context.globals,
+            map: map,
+            context: this.context
         });
+    };
+
+    var MessageTypeViewModel = function(model, context) {
+        this.context = context;
+        this.name = ko.observable(model.name);
+        this.parameters = new EditableParameterSetViewModel(model.properties, this.context);
+        this.hasFocus = ko.observable(model.hasFocus);
+        this.isEditMode = ko.observable(model.isEditMode || model.hasFocus);
+        this.edit = function() {
+            this.isEditMode(true);
+        }
+        this.doneEdit = function() {
+            this.isEditMode(false);
+        }
+    };
+
+    var ContractContextViewModel = function(model) {
+
+        this.messageTypes = new MessageTypesCollectionViewModel(model.messageTypes || [], this);
+
+        this.typeReference = ko.computed(function() {
+            return [].concat(
+                parameterTypes,
+                _.map(this.messageTypes.members(),
+                    function(m) {
+                        return m.name();
+                    }, this)
+            );
+        }, this);
+
+        this.globals = new EditableParameterSetViewModel(model.globals || [], this)
+    };
+
+    var MessageTypesCollectionViewModel = function(models, context) {
+
+        this.context = context;
+
+        this.members = ko.isObservable(models) ? models : ko.observableArray(_.map(models, function(m) {
+            return new MessageTypeViewModel(m, this.context)
+        }, this));
+
+        this.allowAdd = ko.observable(true);
+
+        this.add = function() {
+            this.members.push(new MessageTypeViewModel(
+                {
+                    name: "new_type",
+                    hasFocus: true
+                },
+                this.context));
+        };
+
     };
 
 
@@ -259,9 +319,14 @@ function(
     ko.templates['param-context-mapping'] = paramContextMappingTemplate;
     ko.templates['method-signature'] = methodSignatureTemplate;
     ko.templates['method-mapping'] = methodMappingTemplate;
+    ko.templates['message-types-collection'] = messageTypesTemplate;
 
     var editMethod = function(element, options) {
-        var viewModel = new MethodDefinitionViewModel(options);
+        var viewModel = new MethodDefinitionViewModel(
+            _.result(options, "signature"),
+            _.result(options, "mapping") || [],
+            _.result(options, "context") || []
+        );
         ko.applyBindings(
             {
                 method: viewModel
@@ -274,7 +339,9 @@ function(
             MessageHandling: MethodDefinitionViewModel,
             ParamToContextMapping: ParamToContextMappingViewModel,
             EditableParameterSet: EditableParameterSetViewModel,
-            MethodDefinition: MethodDefinitionViewModel
+            MethodDefinition: MethodDefinitionViewModel,
+            MessageTypes: MessageTypesCollectionViewModel,
+            ContractContext: ContractContextViewModel
         },
 
         editMethod: editMethod

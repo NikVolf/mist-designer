@@ -31,9 +31,12 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
                 height: 70
             },
 
-            signature: {
-                parameters: [],
-                hasReturnType: false
+            definition: {
+                signature: {
+                    parameters: [],
+                    hasReturnType: false
+                },
+                contextMapping: []
             }
         },
 
@@ -63,12 +66,14 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
 
         __infoWindowAfterShow: function() {
 
+            var definition = this.model.get("definition");
+
             messaging.editMethod(
                 this.overlayInfoWindow.select(".md-event-definition").node(),
                 {
-                    signature: this.model.get("signature"),
-                    mapping: this.model.get("contextMapping"),
-                    context: this.parent.settings.context
+                    signature: definition.signature,
+                    mapping: definition.contextMapping,
+                    context: this.parent.settings.context.members
                 });
         }
     });
