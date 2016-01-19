@@ -5,7 +5,6 @@
     require.config({
         paths: {
             'd3': 'bower_components/d3/d3',
-            'd3utils': 'bower_components/diagram-designer-core/js/helpers/d3utils',
             'jquery': 'bower_components/jquery/dist/jquery',
             'handlebars': 'bower_components/handlebars/handlebars',
             'backbone': 'bower_components/backbone/backbone',
@@ -90,8 +89,7 @@
             };
 
             designer.saveDiagram = function () {
-                var json = JSON.stringify(designer.application.diagram.collection.models);
-                designer.diagramDB.overwriteDiagram(designer.selectedDiagram, json);
+                designer.application.saveDiagram();
             };
 
             $(".add-diagram").on("click", function () {

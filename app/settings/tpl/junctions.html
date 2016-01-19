@@ -1,0 +1,21 @@
+<div class="md-junctions">
+
+    <div class="md-junctions-collection" data-bind="foreach: memnber">
+        <div class="md-junctions-collection-row">
+            <div class="md-junctions-collection-cell md-junctions-collection-path" data-bind="text: path">
+            </div>
+
+            <div class="md-junctions-collection-cell md-calculation-type">
+                <span data-bind="visible: !isEditMode(), text: type"></span>
+                <select data-bind="visible: isEditMode, options: typeReference, value: type"></select>
+            </div>
+
+            <div class="md-calculation-definition"
+                 data-bind="template: function() { return definitionTemplate },
+                            data: definition">
+             </div>
+
+        </div>
+    </div>
+
+</div>

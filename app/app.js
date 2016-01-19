@@ -11,7 +11,7 @@ function(designer, StateMachinePalette, FlowChartPalette, settings) {
 
     return Marionette.Object.extend({
         showDiagram: function() {
-            this.diagram = new designer.Diagram({ toolboxWidth: 120, toolboxHeight: 1000, size: { width: "1900px", height: "700px" } });
+            this.diagram = new designer.Diagram({ toolboxWidth: 120, toolboxHeight: 1000, size: { width: "99%", height: "700px" } });
             this.diagram.render();
 
             settings.contract.ensureSettings(this.diagram);
@@ -32,6 +32,17 @@ function(designer, StateMachinePalette, FlowChartPalette, settings) {
                 this.contractSettingsActive = true;
                 settings.contract.show(this.diagram);
             }.bind(this));
+        },
+
+        saveDiagram: function() {
+            if (this.rawDiagramActive) {
+                settings.contract.hide()
+                this.rawDiagramActive = false;
+                return;
+            }
+
+            this.rawDiagramActive = true;
+            settings.contract.showSource(this.diagram);
         },
 
         start: function() {

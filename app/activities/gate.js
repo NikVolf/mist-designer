@@ -5,11 +5,12 @@
 define([
         'diagram-designer',
         './toolboxTemplates',
+        '../settings/transiting',
         'text!./tpl/gate.html',
         'text!./tpl/gate.settings.html'
     ],
 
-function(designer, toolboxTemplates, gateTemplate, gateSettingsTemplate)
+function(designer, toolboxTemplates, transitingSettings, gateTemplate, gateSettingsTemplate)
 {
 
     var GateDefinition = function() {
@@ -30,8 +31,10 @@ function(designer, toolboxTemplates, gateTemplate, gateSettingsTemplate)
                 height: 70
             },
 
-            signature: {
-                parameters: []
+            junctions: [],
+
+            cachedJunctions: {
+
             }
         },
 
@@ -62,6 +65,21 @@ function(designer, toolboxTemplates, gateTemplate, gateSettingsTemplate)
         },
 
         __infoWindowAfterShow: function() {
+            var validFlows = _.filter(this.getLinkedActivities(), function(linkedFlow) {
+                var flowTarget = linkedFlow.getLinkedTargetActivity();
+                return flowTarget && flowTarget != this
+            }, this);
+
+            var junctions = _.map(validFlows, function(flow) {
+                return {
+                    id: flow.getId(),
+                    path: flow.getLinkedTargetActivity().getTitle(),
+                    condition: _.findWhere(this.model.attributes.junctions, { id: flow.getId() })
+                        || this.model.attributes.cachedJunctions[flow.getId()]
+                        || { type: transitingSettings.calculation.types.value, definition: { value: 'false' }}
+                }
+            })
+
             ko.applyBindings(
                 this.model.attributes,
                 this.overlayInfoWindow.select(".md-gate-definition").node());

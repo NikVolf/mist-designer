@@ -347,7 +347,30 @@ function(
             );
         }, this);
 
-        this.globals = new EditableParameterSetViewModel(model.globals || [], this)
+        this.globals = new EditableParameterSetViewModel(model.globals || [], this);
+
+        this.toModel = function() {
+            return {
+                messageTypes: _.map(this.messageTypes.members, function(mt) {
+                    return {
+                        name: mt.name,
+                        parameters: _.map(mt.parameters, function(mtParam) {
+                            return {
+                                name: mtParam.name(),
+                                type: mtPAram.type()
+                            }
+                        }, this)
+                    }
+                }, this),
+                globals: _.map(this.globals.members, function(global) {
+                    return {
+                        name: global.name(),
+                        type: global.type()
+                    }
+
+                }, this)
+            }
+        }
     };
 
     var MessageTypesCollectionViewModel = function(models, context) {

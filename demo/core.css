@@ -56,6 +56,7 @@
 svg {
     border-bottom: 1px solid black;
     border-right: 1px solid black;
+    border-top: 1px solid darkgray;
 }
 
 .svg-resizer.svg-east-resizer, .svg-resizer.svg-west-resizer {
@@ -293,4 +294,25 @@ span.md-parameter-type-small-span {
 
 .md-invalid {
     background-color: rgb(255, 220, 220);
+}
+
+textarea.md-json-raw {
+    width: 100%;
+    min-height: 700px;
+    max-width: 1200px;
+}
+
+.little-menu {
+    padding: 15px;
+    background-color: rgba(255, 125, 125, 0.4);
+    cursor: default;
+}
+
+.little-menu:hover {
+    background-color: rgba(255, 125, 125, 0.8);
+    cursor: default;
+}
+
+.little-menu-panel {
+    padding: 15px;
 }
