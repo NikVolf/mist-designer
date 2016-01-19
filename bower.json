@@ -23,7 +23,12 @@
   ],
   "dependencies": {
     "handlebars": "~4.0.5",
-    "diagram-designer-core": "~0.2.0",
-    "requirejs": "~2.1.22"
+    "diagram-designer-core": "https://github.com/comindware/diagram-designer.git#master",
+    "requirejs": "~2.1.22",
+    "knockout": "~3.4.0",
+    "text": "requirejs-text#~2.0.14"
+  },
+  "devDependencies": {
+    "knockout": "~3.4.0"
   }
 }

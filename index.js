@@ -5,16 +5,19 @@
     require.config({
         paths: {
             'd3': 'bower_components/d3/d3',
-            'd3utils': 'bower_components/diagram-designer-core/js/helpers/d3utils',
             'jquery': 'bower_components/jquery/dist/jquery',
             'handlebars': 'bower_components/handlebars/handlebars',
             'backbone': 'bower_components/backbone/backbone',
             'marionette': 'bower_components/backbone.marionette/lib/backbone.marionette',
-            'underscore': 'bower_components/underscore/underscore'
+            'underscore': 'bower_components/underscore/underscore',
+            'diagram-designer': 'bower_components/diagram-designer-core/lib/diagram-designer-core',
+            'ko': 'bower_components/knockout/dist/knockout',
+            'text': 'bower_components/text/text'
         }
     });
 
-    require(["handlebars", "d3", "jquery", "underscore"], function (handlebars, d3, jquery, underscore) {
+    require(["handlebars", "d3", "jquery", "underscore", "ko"], function (handlebars, d3, jquery, underscore, ko) {
+        window.ko = ko;
         window.Handlebars = handlebars;
         window.d3 = d3;
         window.$ = jquery;
@@ -86,8 +89,7 @@
             };
 
             designer.saveDiagram = function () {
-                var json = JSON.stringify(designer.application.diagram.collection.models);
-                designer.diagramDB.overwriteDiagram(designer.selectedDiagram, json);
+                designer.application.saveDiagram();
             };
 
             $(".add-diagram").on("click", function () {

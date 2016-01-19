@@ -1,0 +1,44 @@
+<div class="md-parameters-col">
+    <div class="md-signature-edit-parameters" data-bind="foreach: members, visible: !isEmpty()">
+        <div class="md-signature-edit-parameter-row" data-bind="css: { 'md-invalid': isInvalid }">
+            <div class="md-signature-edit-parameter-name md-signature-edit-parameter-cell">
+                <span data-bind="visible: !isEditMode(), text: name, click: startEdit"></span>
+                <input title="parameter name" data-bind="visible: isEditMode, value: name">
+            </div>
+            <div class="md-signature-edit-parameter-type md-signature-edit-parameter-cell">
+                <span data-bind="visible: !isEditMode(), text: type, click: startEdit"></span>
+                <select title="parameter type"
+                        data-bind="visible: isEditMode, options: context.typeReference, value: type"></select>
+                <div class="md-parameter-type-argument" data-bind="visible: hasTypeArgument">
+                    <span class="md-parameter-type-small-span">of </span>
+                    <select title="parameter type argument"
+                            data-bind="visible: isEditMode, options: context.typeReference, value: typeArgument"></select>
+                    <span data-bind="visible: !isEditMode(), text: typeArgument, click: startEdit"></span>
+                </div>
+                <div class="md-parameter-type-indexer" data-bind="visible: hasIndexer">
+                    <span class="md-parameter-type-small-span">by </span>
+                    <select title="parameter type indexer"
+                            data-bind="visible: isEditMode, options: context.typeReference, value: indexer"></select>
+                    <span data-bind="visible: !isEditMode(), text: indexer, click: startEdit"></span>
+                </div>
+            </div>
+            <div class="md-signature-edit-parameter-done md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
+                <a data-bind="visible: isEditMode, click: doneEdit">Done</a>
+            </div>
+            <div class="md-signature-edit-parameter-remove md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
+                <a data-bind="click: remove">Remove</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="md-signature-edit-parameters" data-bind="visible: isEmpty">
+        <div class="md-signature-edit-parameter-row md-empty-rows" data-bind="visible: isEmpty">
+            ( EMPTY SET )
+        </div>
+    </div>
+
+    <div class="md-parameter-col-actions">
+        <input type="button" value="add" data-bind="event: { click: addParameter }"/>
+    </div>
+
+</div>

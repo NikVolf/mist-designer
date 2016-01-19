@@ -1,0 +1,28 @@
+<div class="md-message-type-collection">
+
+    <div class="md-message-type-row"  data-bind="foreach: members">
+        <div class="md-messsage-type-name-display" data-bind="text: name, doubleClick: edit"></div>
+        <div class="md-message-type-edit" data-bind="visible: isEditMode">
+
+            <div class="md-messsage-type-name">
+                <label for="name" class="md-messsage-type-name-edit-label" >name: </label>
+                <input name="name" class="md-messsage-type-name-edit" data-bind="value: name">
+                <input type="button" value="done" data-bind="click: doneEdit">
+            </div>
+
+
+            <div class="md-messsage-type-parameters-label">
+                attributes
+            </div>
+            <div class="md-message-type-parameters" data-bind="visible: isEditMode, template: { name: 'editable-parameter-set', data: parameters }">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="md-parameter-col-actions" data-bind="visible: allowAdd">
+        <input type="button" value="add" data-bind="event: { click: add }"/>
+    </div>
+
+
+</div>

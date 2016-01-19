@@ -1,0 +1,318 @@
+.js-graphContainer {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* svg */
+
+.toolbox-circle-primitive {
+    fill: none;
+    stroke: blue;
+    stroke-width: 1.5;
+}
+
+.toolbox-rectangle-primitive {
+    fill: none;
+    stroke: red;
+    stroke-width: 1.5;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.diagram-activity-rectangle {
+    fill: white;
+    stroke: red;
+    stroke-width: 2;
+}
+
+.diagram-activity-rectangle {
+    fill: white;
+    stroke: red;
+    stroke-width: 2;
+}
+
+.diagram-activity-circle {
+    fill: white;
+    stroke: blue;
+    stroke-width: 2;
+}
+
+.drag-point-horizontal {
+    cursor: n-resize;
+}
+
+.drag-point-vertical {
+    cursor: e-resize;
+}
+
+svg {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid darkgray;
+}
+
+.svg-resizer.svg-east-resizer, .svg-resizer.svg-west-resizer {
+    cursor: e-resize;
+}
+
+.svg-resizer.svg-north-resizer, .svg-resizer.svg-south-resizer {
+    cursor: n-resize;
+}
+
+.svg-resizer.svg-north-west-resizer, .svg-resizer.svg-south-east-resizer {
+    cursor: nw-resize;
+}
+
+.svg-resizer.svg-north-east-resizer, .svg-resizer.svg-south-west-resizer {
+    cursor: ne-resize;
+}
+
+.svg-resizer {
+    opacity: 0;
+}
+
+circle.dev-diagram-connector {
+    fill: #fff;
+    stroke: #64aad0;
+    stroke-width: 1px;
+    opacity: 0;
+}
+
+circle.dev-diagram-connector.dev-diagram-flow-visible {
+    opacity: 1;
+}
+
+circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-highlighted {
+    fill: #64aad0;
+    opacity: 1;
+}
+
+.g-selected .diagram-activity-rectangle, .g-selected .diagram-activity-circle {
+    stroke-width: 3;
+}
+
+.rect-hover:hover {
+    fill: rgb(220, 220, 220)
+}
+
+.sequence-back-container {
+    opacity: 0.7
+}
+
+.sequence-back-container:hover {
+    opacity: 1
+}
+
+.sequence-back-container:hover .rect-hover {
+    fill: black;
+}
+
+.activity-title {
+    cursor: default;
+    stroke: black;
+    fill: black;
+}
+
+.dd-overlay-editor-area {
+    z-index: 1000
+}
+
+.diagram-activity-event {
+    fill: white;
+    stroke: green;
+    stroke-width: 2;
+}
+
+.diagram-activity-gate {
+    fill: white;
+    stroke: yellow;
+    stroke-width: 1.5;
+}
+
+.dd-info-window {
+    background-color: white;
+    padding: 12px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.toolbox-event {
+    fill: none;
+    stroke: green;
+    stroke-width: 1.5;
+}
+
+.md-signature-edit-parameters {
+    margin-bottom: 10px;
+    display: table;
+}
+
+.md-signature-edit-parameter-name input, .md-signature-edit-parameter-name span {
+    display: block;
+    width: 190px;
+}
+
+.md-signature-edit-parameter-type select, .md-signature-edit-parameter-type span {
+    display: block;
+    width: 140px;
+}
+
+.md-signature-edit-parameter-cell {
+    padding: 2px;
+    vertical-align: top;
+    display: table-cell;
+}
+
+
+
+.md-signature-edit-parameter-done {
+    width: 60px;
+}
+
+.md-signature-edit-parameter-remove {
+    width: 60px;
+}
+
+.md-signature-edit-parameter-rowcmd a {
+    color: blue;
+}
+
+.md-signature-edit-parameters-actions {
+    width: 100%;
+}
+
+.md-contract-settings {
+    pointer-events: all;
+}
+
+.md-mapping-row {
+    display: table-row;
+}
+
+.md-mapping-table {
+    display: table;
+}
+
+.md-mapping-cell {
+    padding: 2px;
+    vertical-align: top;
+    display: table-cell;
+}
+
+.md-mapping-source-name, .md-mapping-target-select, .md-mapping-target-select select {
+    width: 200px;
+}
+
+.md-contract-settings {
+    pointer-events: all;
+}
+
+.md-message-type-edit {
+    margin-left: 100px;
+    border-left: 1px dotted black;
+    padding-left: 15px;
+}
+
+.md-messsage-type-name-display {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: default;
+
+    min-width: 24px;
+
+    padding: 2px;
+
+}
+
+.md-messsage-type-name-display:hover {
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+.md-parameter-col-actions {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.md-parameter-type-argument span, .md-parameter-type-argument select {
+    width: 90px;
+    margin: 2px 5px;
+    display: inline;
+
+}
+
+.md-parameter-type-argument {
+    width: 140px;
+}
+
+.md-parameter-type-indexer span, .md-parameter-type-indexer select {
+    width: 90px;
+    margin: 2px 5px;
+    display: inline;
+}
+
+.md-parameter-type-indexer {
+    width: 140px;
+}
+
+span.md-parameter-type-small-span {
+    width: 20px;
+}
+
+.md-signature-edit-parameter-row {
+    font-family: "Courier New", monospace
+}
+
+.md-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.md-header-large {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+}
+
+.md-content {
+    border-left: 10px solid rgba(100, 100, 100, 0.25);
+    padding-left: 25px;
+}
+
+.md-invalid {
+    background-color: rgb(255, 220, 220);
+}
+
+textarea.md-json-raw {
+    width: 100%;
+    min-height: 700px;
+    max-width: 1200px;
+}
+
+.little-menu {
+    padding: 15px;
+    background-color: rgba(255, 125, 125, 0.4);
+    cursor: default;
+}
+
+.little-menu:hover {
+    background-color: rgba(255, 125, 125, 0.8);
+    cursor: default;
+}
+
+.little-menu-panel {
+    padding: 15px;
+}
