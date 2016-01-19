@@ -8,10 +8,12 @@ define([
         'diagram-designer',
         './activities/event',
         './activities/task',
-        './activities/gate'
+        './activities/script',
+        './activities/gate',
+        './activities/toolboxTemplates'
     ],
 
-    function(designer, EventDefinition, TaskDefinition, GateDefinition) {
+    function(designer, EventDefinition, TaskDefinition, ScriptDefinition, GateDefinition, toolboxTemplates) {
 
 
         var FlowDefinition = function() {
@@ -23,9 +25,7 @@ define([
         FlowDefinition.ToolboxElement = designer.toolbox.Element.extend({
             initialize: function() {
                 designer.toolbox.Element.prototype.initialize.apply(this, arguments);
-                this.tpl = Handlebars.compile(
-                    '<g transform="translate(13,-6) scale(0.75)"><path d="M0,12L0,47" stroke="#7f7f7f" stroke-width="2"></path>' +
-                    '<polygon points="-5,27 0,11 5,27 -5,27" stroke-width="2" fill="#7f7f7f"></polygon></g>');
+                this.tpl = Handlebars.compile(toolboxTemplates.flow)
             }
         });
 
@@ -33,6 +33,7 @@ define([
         var modelReference = {
             'Flow': designer.activities.Flow,
             'Task': TaskDefinition.Activity,
+            'Script': ScriptDefinition.Activity,
             'Event': EventDefinition.Activity,
             'Gate': GateDefinition.Activity,
 
@@ -49,6 +50,7 @@ define([
                 this.height = 50;
 
                 this.elements.push(new TaskDefinition());
+                this.elements.push(new ScriptDefinition());
 
                 this.id = "tasksGroup";
                 this.title = "Tasks"

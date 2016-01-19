@@ -26,8 +26,8 @@ function(designer, toolboxTemplates, gateTemplate, gateSettingsTemplate)
 
         defaultModelAttributes: {
             size: {
-                width: 100,
-                height: 100
+                width: 70,
+                height: 70
             },
 
             signature: {
@@ -56,6 +56,8 @@ function(designer, toolboxTemplates, gateTemplate, gateSettingsTemplate)
                     template: gateTemplate
                 });
 
+            designer.behaviors.subActivitySpawnSequence.setup(this, { sequence: toolboxTemplates.createStandartSequence() });
+
             designer.activities.Activity.prototype.initialize.apply(this, [cfg]);
         },
 
@@ -71,7 +73,6 @@ function(designer, toolboxTemplates, gateTemplate, gateSettingsTemplate)
         initialize: function() {
             designer.toolbox.Element.prototype.initialize.apply(this, arguments);
             this.tpl = Handlebars.compile(toolboxTemplates.gate);
-            this.modelOptions = JSON.parse(JSON.stringify(GateDefinition.Activity.prototype.defaultModelAttributes));
         }
     });
 

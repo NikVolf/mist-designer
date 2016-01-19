@@ -61,6 +61,9 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
                     template: eventTemplate
                 });
 
+            designer.behaviors.subActivitySpawnSequence.setup(this, { sequence: toolboxTemplates.createStandartSequence() });
+
+
             designer.activities.Activity.prototype.initialize.apply(this, [cfg]);
         },
 
@@ -90,7 +93,6 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
         initialize: function() {
             designer.toolbox.Element.prototype.initialize.apply(this, arguments);
             this.tpl = Handlebars.compile(toolboxTemplates.event);
-            this.modelOptions = EventDefinition. Activity.prototype.defaultModelAttributes;
         }
     });
 

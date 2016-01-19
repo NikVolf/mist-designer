@@ -5,21 +5,21 @@
 define([
     'diagram-designer',
     './toolboxTemplates',
-    'text!./tpl/task.html',
-    'text!./tpl/task.settings.html',
-], function(designer, toolboxTemplates, taskTemplate, taskSettingsTemplate){
+    'text!./tpl/script.html',
+    'text!./tpl/script.settings.html',
+], function(designer, toolboxTemplates, scriptTemplate, scriptSettingsTemplate){
 
-    var TaskDefinition = function() {
-        this.offset = { left: 0, top: 0 };
-        this.view = TaskDefinition.ToolboxElement;
-        this.type = "Task";
+    var ScriptDefinition = function() {
+        this.offset = { left: 30, top: 0 };
+        this.view = ScriptDefinition.ToolboxElement;
+        this.type = "Script";
     };
 
-    TaskDefinition.Activity = designer.activities.Activity.extend({
+    ScriptDefinition.Activity = designer.activities.Activity.extend({
 
 
         paramsMappingTemplateHtml: function() {
-            return taskSettingsTemplate;
+            return scriptSettingsTemplate;
         },
 
 
@@ -42,21 +42,21 @@ define([
             designer.behaviors.subActivitySpawnSequence.setup(this, { sequence: toolboxTemplates.createStandartSequence() });
 
             _.extend(cfg, {
-                template: taskTemplate
+                template: scriptTemplate
             });
             designer.activities.Activity.prototype.initialize.apply(this, [cfg]);
         }
     });
 
-    TaskDefinition.ToolboxElement = designer.toolbox.Element.extend({
+    ScriptDefinition.ToolboxElement = designer.toolbox.Element.extend({
 
         initialize: function() {
             designer.toolbox.Element.prototype.initialize.apply(this, arguments);
-            this.tpl = Handlebars.compile(toolboxTemplates.task)
+            this.tpl = Handlebars.compile(toolboxTemplates.script)
         }
     });
 
 
-    return TaskDefinition;
+    return ScriptDefinition;
 
 });
