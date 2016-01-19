@@ -73,15 +73,26 @@ function(designer, toolboxTemplates, transitingSettings, gateTemplate, gateSetti
             var junctions = _.map(validFlows, function(flow) {
                 return {
                     id: flow.getId(),
-                    path: flow.getLinkedTargetActivity().getTitle(),
+                    path: " -> " + (flow.getLinkedTargetActivity().getTitle() || "No Title"),
+                    description: flow.getTitle() || "",
                     condition: _.findWhere(this.model.attributes.junctions, { id: flow.getId() })
                         || this.model.attributes.cachedJunctions[flow.getId()]
                         || { type: transitingSettings.calculation.types.value, definition: { value: 'false' }}
                 }
-            })
+            }, this)
+
+            var junctionsViewModel = new transitingSettings.junctions.JunctionSettingsViewModel(
+                {
+                    junctions: junctions
+                },
+                this.parent.settings);
+
+            var gateSettingsViewModel = {
+                junctions: junctionsViewModel
+            };
 
             ko.applyBindings(
-                this.model.attributes,
+                gateSettingsViewModel,
                 this.overlayInfoWindow.select(".md-gate-definition").node());
         }
     });

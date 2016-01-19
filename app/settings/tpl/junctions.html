@@ -1,20 +1,67 @@
 <div class="md-junctions">
 
-    <div class="md-junctions-collection" data-bind="foreach: memnber">
+    <div class="md-junctions-collection" data-bind="foreach: members">
         <div class="md-junctions-collection-row">
             <div class="md-junctions-collection-cell md-junctions-collection-path" data-bind="text: path">
             </div>
 
-            <div class="md-junctions-collection-cell md-calculation-type">
-                <span data-bind="visible: !isEditMode(), text: type"></span>
-                <select data-bind="visible: isEditMode, options: typeReference, value: type"></select>
+            <div class="md-junctions-collection-cell md-junctions-collection-path" data-bind="text: description">
             </div>
 
-            <div class="md-calculation-definition"
-                 data-bind="template: function() { return definitionTemplate },
-                            data: definition">
-             </div>
+            <div class="md-junction-condition-section" data-bind="with: condition">
 
+                <div class="md-junctions-collection-cell md-calculation-type">
+                    <span data-bind="visible: !isEditMode(), text: type, click: edit"></span>
+                    <select data-bind="visible: isEditMode,
+                                       options: typeReference,
+                                       hasFocus: isEditMode,
+                                       optionsText: function(item) { return item; },
+                                       value: type">
+
+                     </select>
+                </div>
+
+                <div class="md-calculation-definition" data-bind="with: definitions">
+
+                    <div class="md-definition-expression" data-bind="visible: $parent.type() == 'calculation.expression', with: expression">
+                        <textarea style="width: 200px; height: 50px" data-bind="value: expression"></textarea>
+                    </div>
+
+                    <div class="md-definition-value" data-bind="visible: $parent.type() == 'calculation.value', with: value">
+                        <input type="text" data-bind="value: value">
+                    </div>
+
+                    <div class="md-definition-property" data-bind="visible: $parent.type() == 'calculation.property', with: property">
+                        <div class="md-mapping-target-select md-mapping-cell">
+                            <select title="target for map"
+                                    data-bind="options: context.globalNames,
+                                               value: path">
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!--<span data-bind="text: property.path" />-->
+                    <!--<span data-bind="text: value.value" />-->
+                    <!--<span data-bind="text: expression.expression" />-->
+                    <!--<div class="md-calculation-definition-property"-->
+                         <!--data-bind="visible: $parent.type() == 'property',-->
+                                    <!--template: 'calculation-property-type',-->
+                                    <!--data: property">-->
+                    <!--</div>-->
+                    <!--<div class="md-calculation-definition-expression"-->
+                         <!--data-bind="visible: $parent.type() == 'expression',-->
+                                    <!--template: 'calculation-expression-type',-->
+                                    <!--data: expression">-->
+                    <!--</div>-->
+                    <!--<div class="md-calculation-definition-value"-->
+                         <!--data-bind="visible: $parent.type() == 'value',-->
+                                    <!--template: 'calculation-value-type',-->
+                                    <!--data: value">-->
+                    <!--</div>-->
+                </div>
+            </div>
         </div>
     </div>
 

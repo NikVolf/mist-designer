@@ -39,11 +39,11 @@
   "devDependencies": {
     "requirejs": "~2.1.22"
   },
-  "_release": "3e59e9b825",
+  "_release": "b673ad03a9",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "3e59e9b8252ac3a5cd4475ffa35ebbd60f2736b1"
+    "commit": "b673ad03a9497e218cdbab272647636cc9af25d9"
   },
   "_source": "https://github.com/comindware/diagram-designer.git",
   "_target": "master",
