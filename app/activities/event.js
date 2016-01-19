@@ -33,7 +33,7 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
 
             definition: {
                 signature: {
-                    parameters: [],
+                    declaringParameters: [],
                     hasReturnType: false
                 },
                 contextMapping: []
@@ -69,12 +69,19 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
             var definition = this.model.get("definition");
 
             messaging.editMethod(
-                this.overlayInfoWindow.select(".md-event-definition").node(),
                 {
                     signature: definition.signature,
-                    mapping: definition.contextMapping,
-                    context: this.parent.settings.context.members
-                });
+                    map: definition.contextMapping,
+                    save: function(updates) {
+                        definition.signature = JSON.parse(JSON.stringify(updates.signature));
+                        definition.contextMapping = JSON.parse(JSON.stringify(updates.map))
+                    }
+                },
+                {
+                    context: this.parent.settings,
+                    element: this.overlayInfoWindow.select(".md-event-definition").node()
+                }
+            );
         }
     });
 
@@ -83,7 +90,7 @@ function(designer, toolboxTemplates, messaging, eventTemplate, eventSettingsTemp
         initialize: function() {
             designer.toolbox.Element.prototype.initialize.apply(this, arguments);
             this.tpl = Handlebars.compile(toolboxTemplates.event);
-            this.modelOptions = JSON.parse(JSON.stringify(EventDefinition.Activity.prototype.defaultModelAttributes));
+            this.modelOptions = EventDefinition. Activity.prototype.defaultModelAttributes;
         }
     });
 

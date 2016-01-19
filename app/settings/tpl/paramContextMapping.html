@@ -1,7 +1,7 @@
 <div class="md-mapping">
     <div class="md-mapping-table" data-bind="foreach: map">
         <div class="md-mapping-row" >
-            <div class="md-mapping-source-name md-mapping-cell" data-bind="with: source">
+            <div class="md-mapping-source-name md-mapping-cell" data-bind="with: sourceExplained">
                 <span class="md-mapping-entity-id" data-bind="text: name"></span>
                 <span class="md-mapping-entity-delimeter"> : </span>
                 <span class="md-mapping-entity-type" data-bind="text: type"></span>
@@ -13,8 +13,8 @@
 
             <div class="md-mapping-target-select md-mapping-cell">
                 <select title="target for map"
-                        data-bind="options: $parent.targetParamReference,
-                                   selectedOptions: selectedTarget">
+                        data-bind="options: targetTypedReference,
+                                   value: target">
 
                 </select>
             </div>

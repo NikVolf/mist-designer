@@ -75,23 +75,30 @@ function(
                 type: this.context.typeReference()[0]
             });
             this.members.push(viewModel)
-        };
+        }.bind(this);
 
         this.isEmpty = ko.computed(function() {
             return this.members().length == 0;
         }, this);
+
+        this.toModel = function() {
+            return _.map(this.members(), function(member) {
+                return {
+                    name: ko.utils.unwrapObservable(member.name),
+                    type:  ko.utils.unwrapObservable(member.type)
+                }
+            });
+        }.bind(this);
     };
 
 
-    var MappingItemViewModel = function(
-        model,
-        sourceParameters,
-        targetParameters)
+    var MappingItemViewModel = function(model, context, methodContext)
     {
+        this.context = context;
 
-        this.sourceParameters = sourceParameters;
+        this.methodContext = methodContext;
 
-        this.targetParameters = targetParameters;
+        this.sourceParameters = this.methodContext.sourceParameters;
 
         this.isEditMode = ko.observable(false);
 
@@ -99,62 +106,60 @@ function(
             this.isEditMode(false)
         };
 
-        this.source = {
-            name: ko.observable(model.source ? ko.utils.unwrapObservable(model.source.name) : ""),
-            type: ko.observable(model.source ? ko.utils.unwrapObservable(model.source.type) : ""),
-            //isAssigned: ko.computed(function() {
-            //    return !!this.source.name() && !!this.source.type();
-            //}, this)
-        };
+        this.source = ko.observable(model.source);
 
-        if (model.source && model.source.name && ko.isObservable(model.source.name)) {
-            model.source.name.subscribe(function(newSourceName) {
-                this.source.name(newSourceName);
-            }, this);
-        }
+        var __sourceExplained = _.find(this.sourceParameters(), function(sourceMember) { return sourceMember.name() == this.source() }, this);
+        if (!__sourceExplained)
+            throw "no " + model.source + " in source parameters";
 
-        if (model.source && model.source.type && ko.isObservable(model.source.type)) {
-            model.source.type.subscribe(function(newSourceType) {
-                this.source.type(newSourceType);
-            }, this);
-        }
+        this.sourceExplained = __sourceExplained;
+        this.sourceExplained.name.subscribe(function() {
+            this.source(this.sourceExplained.name());
+        }, this);
 
-        this.target = {
-            name: ko.observable(model.target ? ko.utils.unwrapObservable(model.target.name) : ""),
-            type: ko.observable(model.target ? ko.utils.unwrapObservable(model.target.name) : ""),
-            //isAssigned: ko.computed(function() {
-            //    return !!this.target.name() && !!this.target.type();
-            //}, this),
-            //isValid: ko.computed(function(){
-            //    return this.target.type() == this.source.type();
-            //}, this)
-        };
 
-        this.selectedTarget = ko.observable(model.target ? model.target.name : null);
+        this.target = ko.observable(model.target);
 
-        this.selectedTarget.subscribe(function(newSelectedTargetValue){
+        this.target.subscribe(function(newSelectedTargetValue){
             var newSelectedParameter = _.findWhere(
                 ko.utils.unwrapObservable(this.targetParameters),
                 {
                     name : newSelectedTargetValue
                 });
 
-            this.target.name(newSelectedParameter.name);
-            this.target.type(newSelectedParameter.type);
+            if (newSelectedParameter) {
+                this.target(newSelectedParameter.name);
+            }
+        }, this);
+
+        this.targetTypedReference = ko.computed(function() {
+            var type = this.sourceExplained.type();
+            if (type) {
+                var result = _.chain(this.methodContext.targetParameters())
+                    .filter(function(targetMember) {
+                        return ko.utils.unwrapObservable(targetMember.type) == type;
+                    }, this)
+            }
+            else result = _.chain(this.methodContext.targetParameters());
+
+            return result.pluck("name").value();
+
         }, this);
 
         this.isOfSource = function(parameterName) {
-            return this.source.name() == ko.utils.unwrapObservable(parameterName);
+            return this.source() == ko.utils.unwrapObservable(parameterName);
         };
     };
 
-    var ParamToContextMappingViewModel = function(model){
+    var ParamToContextMappingViewModel = function(model, context){
 
-        this.context = model.context;
+        this.context = context;
 
-        this.sourceParameters = ko.isObservable(model.sourceParameters)
-            ? model.sourceParameters
-            : ko.observableArray(model.sourceParameters);
+        this.methodContext = {
+            sourceParameters: _.isArray(model.sourceParameters)
+                ? ko.observableArray(model.sourceParameters)
+                : model.sourceParameters
+        };
 
         this.pushMap = function(source, target) {
             this.map.push(new MappingItemViewModel(
@@ -162,9 +167,8 @@ function(
                     source: source,
                     target: target
                 },
-                this.sourceParameters,
-                this.targetParameters,
-                this.targetParamReference));
+                this.context,
+                this.methodContext));
         };
 
         this.allowAdd = ko.observable(false);
@@ -181,11 +185,11 @@ function(
 
         this.isEditMode = ko.observable(false);
 
-        this.sourceParameters.subscribe(function(changes){
+        this.methodContext.sourceParameters.subscribe(function(changes){
 
             changes.forEach(function(change) {
                 if (change.status === 'added') {
-                    this.pushMap(change.value);
+                    this.pushMap(change.value.name());
                 }
                 else if (change.status === 'deleted') {
                     var mapEntry = this.map().find(function(mappingItem) {
@@ -197,49 +201,61 @@ function(
             }, this);
         }, this, "arrayChange");
 
-        this.targetParameters = ko.isObservable(model.targetParameters)
+        this.methodContext.targetParameters = ko.isObservable(model.targetParameters)
             ? model.targetParameters
             : ko.observableArray(model.targetParameters);
-
-        this.targetParamReference = ko.observableArray(_.map(this.targetParameters(), function(p) { return p.name; }));
-
-        this.targetParameters.subscribe(function(){
-            this.targetParamReference.removeAll();
-            _.each(this.targetParameters(), function(p) { this.targetParamReference.push(p.name); }.bind(this));
-        }.bind(this));
 
         this.map = ko.observableArray(_.map(model.map,
             function(m) {
                 return new MappingItemViewModel(
                     m,
-                    this.sourceParameters,
-                    this.targetParameters);
+                    this.context,
+                    this.methodContext);
             }.bind(this)
         ));
 
+        this.toModel = function() {
+            return _.map(this.map(), function(mapEntry) {
+                return {
+                    source: ko.utils.unwrapObservable(mapEntry.source),
+                    target: ko.utils.unwrapObservable(mapEntry.target)
+                }
+            })
+        }
+
     };
 
-    var SignatureViewModel = function(model) {
-        this.declaringParameters = new EditableParameterSetViewModel(model.parameters);
+    var SignatureViewModel = function(model, context) {
+        this.context = context;
+        this.declaringParameters = new EditableParameterSetViewModel(model.declaringParameters, this.context);
         this.returnType = ko.observable(model.returnType);
         this.hasReturnType = ko.observable(model.hasReturnType);
         this.parameterTypes = ko.observableArray(parameterTypes);
 
     };
 
-    var MethodDefinitionViewModel = function(signature, map, context) {
+    var MethodDefinitionViewModel = function(model, context) {
         this.context = context;
 
-        this.signature = new SignatureViewModel(signature);
+        this.signature = new SignatureViewModel(model.signature, this.context);
 
-        this.parameterTypes = ko.observableArray(parameterTypes);
+        this.mappings = new ParamToContextMappingViewModel(
+            {
+                sourceParameters: this.signature.declaringParameters.members,
+                targetParameters: this.context.globals.members,
+                map: model.map
+            },
+            this.context
+        );
 
-        this.mappings = new ParamToContextMappingViewModel({
-            sourceParameters: this.signature.declaringParameters.members,
-            targetParameters: this.context.globals,
-            map: map,
-            context: this.context
-        });
+        this.save = function() {
+            model.save && model.save({
+                signature: {
+                    declaringParameters: this.signature.declaringParameters.toModel()
+                },
+                map: this.mappings.toModel()
+            });
+        }.bind(this);
     };
 
     var MessageTypeViewModel = function(model, context) {
@@ -250,7 +266,7 @@ function(
         this.isEditMode = ko.observable(model.isEditMode || model.hasFocus);
         this.edit = function() {
             this.isEditMode(true);
-        }
+        };
         this.doneEdit = function() {
             this.isEditMode(false);
         }
@@ -321,17 +337,16 @@ function(
     ko.templates['method-mapping'] = methodMappingTemplate;
     ko.templates['message-types-collection'] = messageTypesTemplate;
 
-    var editMethod = function(element, options) {
+    var editMethod = function(definition, options) {
         var viewModel = new MethodDefinitionViewModel(
-            _.result(options, "signature"),
-            _.result(options, "mapping") || [],
-            _.result(options, "context") || []
+            definition,
+            options.context
         );
         ko.applyBindings(
             {
                 method: viewModel
             },
-            element);
+            options.element);
     };
 
     return {

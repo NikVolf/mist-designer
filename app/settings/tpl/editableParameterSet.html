@@ -8,7 +8,7 @@
             <div class="md-signature-edit-parameter-type md-signature-edit-parameter-cell">
                 <span data-bind="visible: !isEditMode(), text: type, click: startEdit"></span>
                 <select title="parameter type"
-                        data-bind="visible: isEditMode, options: context.typeReference, selectedOptions: type"></select>
+                        data-bind="visible: isEditMode, options: context.typeReference, value: type"></select>
             </div>
             <div class="md-signature-edit-parameter-done md-signature-edit-parameter-cell md-signature-edit-parameter-rowcmd">
                 <a data-bind="visible: isEditMode, click: doneEdit">Done</a>
