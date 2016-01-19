@@ -27,6 +27,9 @@ function(
             type : ko.observable(model.type),
             isEditMode: ko.observable(false),
             isDeleted: ko.observable(false),
+            typeArgument: ko.observable(model.typeArgument),
+            indexer: ko.observable(model.indexer),
+
             doneEdit: function() {
                 this.isEditMode(false);
             },
@@ -37,6 +40,17 @@ function(
                 this.isDeleted(true);
             }
         });
+
+        this.hasTypeArgument = ko.computed(function() {
+            var type= this.type();
+            return type == 'list' || type == 'mapping';
+        }, this);
+
+        this.hasIndexer = ko.computed(function() {
+            var type= this.type();
+            return type == 'mapping';
+        }, this);
+
     };
 
     var EditableParameterSetViewModel = function(parameters, context) {
@@ -55,23 +69,70 @@ function(
             this.isDirty(true);
         };
 
+        var __pending = ko.observable(true);
 
         this.createParameterViewModel = function(model) {
             var viewModel = new EditableParameterViewModel(model, this.context);
             viewModel.isDeleted.subscribe(this.parameterIsDeletedChanged.bind(this, viewModel));
             viewModel.name.subscribe(this.saveSignature, this);
             viewModel.type.subscribe(this.saveSignature, this);
+            viewModel.isValid = ko.computed(function() {
+                if (__pending())
+                    return true;
+
+                var myName = this.name();
+                return _.filter(__members(), function(m) {
+                    return m.name() == myName;
+                }, this).length <= 1;
+            }, viewModel);
+            viewModel.isInvalid = ko.computed(function() { return !__pending() && !this.isValid(); }, viewModel);
+
+            viewModel.isEditMode.subscribe(function(member){
+                var current = this.currentEdited();
+                if (current && current != viewModel)
+                    current.isEditMode(false);
+
+                this.currentEdited(viewModel);
+            }, this);
 
             return viewModel;
         };
 
-        this.members = ko.observableArray(_.map(parameters, this.createParameterViewModel, this));
+        var __members = this.members = ko.observableArray(_.map(parameters, this.createParameterViewModel, this));
+
+        __pending(false);
 
         this.members.subscribe(this.saveSignature, this);
 
+        this.currentEdited = ko.observable(false);
+
+        this.generateName = function() {
+            var idx = 1;
+            do {
+                var nameCandidate = "param" + idx;
+                var existing = this.findByName(nameCandidate);
+                idx++;
+            }
+            while(existing)
+
+            return nameCandidate;
+        };
+
+        this.findByName = function(name) {
+            return _.find(this.members(), function(m) {
+                return m.name() == name;
+            });
+        };
+
+        this.filterByName = function(name) {
+            _.filter(this.members(), function(m) {
+                return m.name() == name;
+            });
+        };
+
         this.addParameter = function() {
             var viewModel = this.createParameterViewModel({
-                name: 'new_param',
+                name: this.generateName(),
                 type: this.context.typeReference()[0]
             });
             this.members.push(viewModel)
@@ -298,14 +359,33 @@ function(
         }, this));
 
         this.allowAdd = ko.observable(true);
+        this.currentEdited = ko.observable(false);
 
         this.add = function() {
-            this.members.push(new MessageTypeViewModel(
+            var current = this.currentEdited();
+
+            var viewModel = new MessageTypeViewModel(
                 {
                     name: "new_type",
                     hasFocus: true
                 },
-                this.context));
+                this.context);
+
+            if (current && current != viewModel)
+                current.isEditMode(false);
+
+            this.members.push(viewModel);
+
+            this.currentEdited(viewModel);
+
+            viewModel.isEditMode.subscribe(function(member){
+                var current = this.currentEdited();
+                if (current && current != viewModel)
+                    current.isEditMode(false);
+
+                this.currentEdited(viewModel);
+            }, this);
+
         };
 
     };

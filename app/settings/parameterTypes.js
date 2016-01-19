@@ -4,6 +4,6 @@
 
 define([], function(){
 
-    return ['number', 'string', 'mapping', 'array'];
+    return ['number', 'string', 'mapping', 'list'];
 
 });

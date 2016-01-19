@@ -156,17 +156,17 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 
 .md-signature-edit-parameter-name input, .md-signature-edit-parameter-name span {
     display: block;
-    width: 160px;
+    width: 190px;
 }
 
 .md-signature-edit-parameter-type select, .md-signature-edit-parameter-type span {
     display: block;
-    width: 90px;
+    width: 140px;
 }
 
 .md-signature-edit-parameter-cell {
     padding: 2px;
-    vertical-align: middle;
+    vertical-align: top;
     display: table-cell;
 }
 
@@ -202,7 +202,7 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 
 .md-mapping-cell {
     padding: 2px;
-    vertical-align: middle;
+    vertical-align: top;
     display: table-cell;
 }
 
@@ -242,5 +242,55 @@ circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-h
 
 .md-parameter-col-actions {
     margin-top: 5px;
-    margin-botton: 15px;
+    margin-bottom: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.md-parameter-type-argument span, .md-parameter-type-argument select {
+    width: 90px;
+    margin: 2px 5px;
+    display: inline;
+
+}
+
+.md-parameter-type-argument {
+    width: 140px;
+}
+
+.md-parameter-type-indexer span, .md-parameter-type-indexer select {
+    width: 90px;
+    margin: 2px 5px;
+    display: inline;
+}
+
+.md-parameter-type-indexer {
+    width: 140px;
+}
+
+span.md-parameter-type-small-span {
+    width: 20px;
+}
+
+.md-signature-edit-parameter-row {
+    font-family: "Courier New", monospace
+}
+
+.md-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.md-header-large {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+}
+
+.md-content {
+    border-left: 10px solid rgba(100, 100, 100, 0.25);
+    padding-left: 25px;
+}
+
+.md-invalid {
+    background-color: rgb(255, 220, 220);
 }
