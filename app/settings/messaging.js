@@ -303,11 +303,17 @@ function(
         this.mappings = new ParamToContextMappingViewModel(
             {
                 sourceParameters: this.signature.declaringParameters.members,
+                //sourceParameters: ko.computed(function() {
+                //    var declaredMembers = _.clone(this.signature.declaringParameters.members());
+                //    declaredMembers.push({ name: 'msg', type: 'message' });
+                //    return declaredMembers;
+                //}, this),
                 targetParameters: this.context.globals.members,
                 map: model.map
             },
             this.context
         );
+
 
         this.save = function() {
             model.save && model.save({

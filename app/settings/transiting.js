@@ -2,31 +2,50 @@
  * Created by nvolf on 19.01.2016.
  */
 
-define([], function() {
+define([
+    './stringTemplateEngine',
+    'text!./tpl/junctions.html'
+],
+
+function(stringTemplateEngine,
+         junctionsTemplate
+    )
+{
 
     var calculationTypes = {
         property: "calculation.property",
         expression: "calculation.expression",
         value: "calculation.value"
-    }
+    };
+
+    var calculationTypeNames = {
+        "calculation.property": "property",
+        "calculation.expression": "expression",
+        "calculation.value": "value"
+    };
 
     var PropertyReferenceViewModel = function(model, context) {
         this.context = context;
         this.path = ko.observable(model.path);
-        this.template = "calculation-property-type";
+
+        this.isEditMode = ko.observable(false);
     };
 
     var ExpressionViewModel = function(model, context) {
         this.context = context;
         this.expression = ko.observable(model.expression);
-        this.template = "calculation-expression-type";
+
+        this.isEditMode = ko.observable(false);
     };
 
     var ValueViewModel = function(model, context) {
         this.context = context;
         this.value = ko.observable(model.value);
-        this.template = "calculation-value-type";
-    }
+
+        this.isEditMode = ko.observable(false);
+    };
+
+    ko.templates['junctions'] = junctionsTemplate;
 
     function resolveViewModel(calcType) {
         if (calcType == calculationTypes.property)
@@ -45,32 +64,32 @@ define([], function() {
 
         this.context = _.extend({}, context,
             {
-                globalTypes: ko.computed(function () {
+                globalNames: ko.computed(function () {
                     var targetType = this.targetType();
-                    return _.chain(context.globals())
+                    return _.chain(context.globals.members())
                         .filter(function (g) {
                             return !targetType || g.type() == targetType
                         })
                         .map(function (g) {
-                            return g.name;
-                        });
+                            return g.name();
+                        })
+                        .value();
                 }, this)
             });
 
         this.type = ko.observable(model.type || calculationTypes.property);
 
+        this.definitions = {
+            value: new ValueViewModel({ value: model.type == calculationTypes.value ? model.value : "" }, this.context),
+            expression:  new ExpressionViewModel({ expression: model.type == calculationTypes.expression ? model.expression : "" }, this.context),
+            property:  new PropertyReferenceViewModel({ path: model.type == calculationTypes.property ? model.path : "" }, this.context)
+        }
+
         this.typeReference = ko.observableArray(_.toArray(calculationTypes));
 
-        var viewModelType = resolveViewModel(this.type);
-        this.definition = ko.observable(new viewModelType(model.definition, this.context));
-        this.definitionTemplate = this.definition.template;
+        this.isEditMode = ko.observable(false);
 
-        this.type.subscribe(function(newType) {
-            var viewModelType = resolveViewModel(this.type);
-            var newDefinition = new viewModelType(model.definition, this.context);
-            this.template = this.definition.template;
-            this.definition(newDefinition);
-        }, this);
+        this.edit = function() { this.isEditMode(true); }
     };
 
     var JunctionSettingViewModel = function(model, context) {
@@ -79,7 +98,11 @@ define([], function() {
 
         this.path = ko.observable(model.path);
 
-        this.condition = new CalculationViewModel(_.extend(model.condition, { targetType: "bool" }));
+        this.condition = new CalculationViewModel(_.extend(model.condition, { targetType: "bool" }), context);
+
+        this.description = ko.observable(model.description);
+
+        this.isEditMode = ko.observable(false);
 
     };
 

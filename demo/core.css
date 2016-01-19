@@ -316,3 +316,18 @@ textarea.md-json-raw {
 .little-menu-panel {
     padding: 15px;
 }
+
+.md-definition-value span, .md-definition-value input {
+    width: 60px;
+    border: 1px dashed lightgray;
+}
+
+.md-junctions-collection-row {
+    display: list-item;
+    margin-left: 45px;
+    padding-left: 15px;
+}
+
+.g-selected > g > rect, .g-selected > g > path, .g-selected > g > polygon {
+    stroke-width: 2px;
+}
